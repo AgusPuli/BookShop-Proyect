@@ -117,6 +117,30 @@ def Menu():
             break
 
 
+def MainFunction():
+    print("iniciando Uso Normal")
+    while True:
+        ProductList = []
+        while True:
+            try:
+                var = str(input("ingrese el nombre del articulo: "))
+                cursor.execute('''
+                select precio from Base
+                where articulo = ?''',(var,))
+                num = cursor.fetchone()[0]
+                ProductList.append(num)
+            except Exception as e:
+                print(e)
+                break
+        resultado = sum(ProductList)
+        print(f"El precio final es: {resultado}")
+        election = int(input("Ingrese 1 si quiere volver a inciiar La funcion de escaneo: "))
+        if election != 1:
+            break
+
+
+
+
 
 
 
@@ -158,7 +182,7 @@ def Menu():
 
 
 Menu()
-
+MainFunction()
 
 connection.close()
 print("Conexión cerrada.")
