@@ -8,55 +8,40 @@ print("Conexión establecida.")
 
 
 #def space
-def EliminarTotal():
+def EliminarTotal():        #delet libros info
     cursor.execute('''
-    delete from libros
+    delete from Base
     ''')
     connection.commit()
-def creartabla():
+
+
+def creartabla():               #crea la tabla primaria
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS libros (
+    CREATE TABLE IF NOT EXISTS Base (
         id INTEGER PRIMARY KEY,
-        titulo TEXT,
-        puli TEXT,
-        autor TEXT,
-        precio REAL
+        articulo TEXT,
+        stock INTEGER,
+        precio FLOAT
     )
     ''')
+    print("Tabla creada.")
 
     connection.commit()
 
 
-def Agregarbasic():
-    cursor.execute('''
-    INSERT INTO libros (titulo, autor, precio, puli)
-    VALUES ('Cien Años de Soledad', 'Gabriel García Márquez', 15000.99,'si')
-    ''')
 
-def AgregarPersonalizado(titulo,autor,precio,nombre):
+
+def AgregarPersonalizado(articulo,stock,precio):
     cursor.execute('''
-    INSERT INTO libros (titulo, autor, precio, puli)
-    VALUES (?,?,?,?)
-    ''',(titulo,autor,precio,nombre))
+    insert into Base(articulo, stock, precio)
+    VALUES (?,?,?)
+    ''',(articulo,stock,precio))
     connection.commit()
     print("Registro insertado.")
 
 
-def AgregarLista():
-    libros = [
-        ('Don Quijote de la Mancha', 'Miguel de Cervantes', 12.99),
-        ('El Principito', 'Antoine de Saint-Exupéry', 8.99),
-        ('1984', 'George Orwell', 14.99)
-    ]
 
-    cursor.executemany('''
-    INSERT INTO libros (titulo, autor, precio)
-    VALUES (?, ?, ?)
-    ''', libros)
 
-    connection.commit()
-
-    print("Varios registros insertados.")
 
 def PrintTablas():
     cursor.execute('SELECT * FROM libros')
@@ -74,24 +59,36 @@ def EliminarTitulo():
 
         connection.commit()
 
+def AumentarPrecio(articuloaux, num):
+    cursor.execute('''
+    update Base
+    set precio= precio+precio*(?/100)
+    where articulo=?
+    ''',(num,articuloaux))
+    connection.commit()
 #creartabla()
 #Agregarbasic()
 #AgregarLista()
 #AgregarPersonalizado("aladin","hernan",3000,"puli")
 #EliminarTotal()
-print("Enter:1 to ")
-print("Enter:1 to ")
-print("Enter:1 to ")
-print("Enter:1 to ")
+print("Enter:1 to create table ")
+print("Enter:2 to add articulo ")
+print("Enter:3 to delete all info from Base ")
+print("Enter:any else to quit")
 
 while True:
     election=int(input("ingrese el numero: "))
     if election == 1:
         creartabla()
     elif election == 2:
-        AgregarPersonalizado("hola","hola",3500,"hola")
+        print()
+        articuloaux,stockaux,precioaux=str(input("Ingrese el articulo: ")),int(input("Ingrese el stock: ")),float(input("Ingrese el precio: "))
+        AgregarPersonalizado(articuloaux,stockaux,precioaux)
     elif election == 3:
         EliminarTotal()
+    elif election == 4:
+        articulo=str(input("Ingrese el articulo: "))
+        AumentarPrecio(articulo,100)
     else:
         break
 
