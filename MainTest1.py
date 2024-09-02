@@ -82,6 +82,8 @@ def AumentarPrecio(articuloaux, num):
 #AgregarPersonalizado("aladin","hernan",3000,"puli")
 #EliminarTotal()
 
+
+#   F_Manejode datos
 def Menu():
     while True:
         print()
@@ -116,7 +118,7 @@ def Menu():
         else:
             break
 
-
+# F_Cajero
 def MainFunction():
     print("iniciando Uso Normal")
     while True:
@@ -137,48 +139,6 @@ def MainFunction():
         election = int(input("Ingrese 1 si quiere volver a inciiar La funcion de escaneo: "))
         if election != 1:
             break
-
-
-
-
-
-
-
-
-
-"""while True:
-
-    print()
-    print()
-    print("Enter:1 to create table ")
-    print("Enter:2 to add articulo ")
-    print("Enter:3 to delete all info from Base ")
-    print("Enter:4 to increase price ")
-    print("Enter:5 to  delete an article")
-    print("Enter:any other key to exit")
-
-
-
-
-
-
-    election=int(input("ingrese el numero: "))
-    if election == 1:
-        creartabla()
-    elif election == 2:
-        print()
-        articuloaux,stockaux,precioaux=str(input("Ingrese el articulo: ")),int(input("Ingrese el stock: ")),float(input("Ingrese el precio: "))
-        AgregarPersonalizado(articuloaux,stockaux,precioaux)
-    elif election == 3:
-        EliminarTotal()
-    elif election == 4:
-        articulo, aumento=str(input("Ingrese el articulo: ")),int (input("Ingrese el porcentaje de aumento sin el simbolo -%: "))
-        AumentarPrecio(articulo,aumento)
-    elif election == 5:
-        Articulo=str(input("Ingrese el articulo: "))
-        EliminarArticulo(Articulo)
-    else:
-        break"""
 
 
 Menu()
