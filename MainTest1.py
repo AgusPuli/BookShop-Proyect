@@ -1,4 +1,6 @@
 import sqlite3
+
+
 #code by AgusPuli
 
 connection = sqlite3.connect('mi_base_de_datos.db')
@@ -10,11 +12,6 @@ print("Conexión establecida.")
 #def space
 
 #   F_Elimina la tabla
-def EliminarTotal():
-    cursor.execute('''
-    delete from Base
-    ''')
-    connection.commit()
 
 #   F_Crea la tabla
 def creartabla():
@@ -23,7 +20,8 @@ def creartabla():
         id INTEGER PRIMARY KEY,
         articulo TEXT,
         precio FLOAT,
-        stock INTEGER
+        stock INTEGER,
+        code integer
         
     )
     ''')
@@ -41,13 +39,13 @@ def AgregarPersonalizado(articulo,stock,precio):
     ''',(articulo,stock,precio))
     connection.commit()
     print("Registro insertado.")
+#
+#
+#
+#
+#
 
-
-
-
-# F_Mostrar     //Sin Uso por ahora
-
-
+#Eliminar Datos
 
 #   F_Elimina un elemento
 def EliminarArticulo(articuloaux):
@@ -60,6 +58,18 @@ def EliminarArticulo(articuloaux):
         connection.commit()
         print("Articulo eliminado.")
 
+#   F_EliminarTabla
+def EliminarTabla():
+    cursor.execute('''
+    delete from Base
+    ''')
+    connection.commit()
+#
+#
+#
+#
+#
+#AUMENTO Y DISMINUCION DE PRECIO
 
 #   F_Aumentar porecio por oporcentaje
 def AumentarPrecio(articuloaux, num):
@@ -69,32 +79,56 @@ def AumentarPrecio(articuloaux, num):
     ''',(articuloaux,))
     precio = (cursor.fetchone())[0]
     precio=precio+precio*(num/100)
-
     cursor.execute('''
     update Base
     set precio= ?
     where articulo=?
     ''',(precio, articuloaux))
     connection.commit()
-#creartabla()
-#Agregarbasic()
-#AgregarLista()
-#AgregarPersonalizado("aladin","hernan",3000,"puli")
-#EliminarTotal()
+
+#   F_Disminuciondeprecio
+def DisminuirPrecio(articuloaux, num):
+    cursor.execute('''
+    select precio from Base
+    where articulo=?
+    ''',(articuloaux,))
+    precio = (cursor.fetchone())[0]
+    precio=precio-precio*(num/100)
+    cursor.execute('''
+    update Base
+    set precio= ?
+    where articulo=?
+    ''',(precio, articuloaux))
+    connection.commit()
 
 
-#   F_Manejode datos
+def IngresarPrecio(articuloaux, num):
+    cursor.execute('''
+    update Base
+    set precio=?
+    where articulo=?
+    ''',(num,articuloaux,))
+    connection.commit()
+#
+#
+#
+#
+#
+#MENUS
+
+#   F_Menu
 def Menu():
     while True:
         print()
         print()
-        print("Ingrese 1 para crear una nueva tabla \nIngrese 2 para añadir un articulo o aumentar su precio\nIngrese 3 para eliminar un articulo o disminuir su precio")
+        print("Ingrese 1 para crear una nueva tabla \nIngrese 2 para añadir un articulo o cambiar su precio\nIngrese 3 para eliminar un articulo o disminuir su precio")
         election = int(input("ingrese el numero: "))
         if election == 1:
             creartabla()
 
         elif election == 2:
-            election = int(input("Ingrese 1 para añadir un articulo o 2 para aumentar su precio"))
+            print()
+            election = int(input("Ingrese 1 para añadir un articulo, 2 para aumentar su precio, 3 para disminuirlo, 4 para ingresar un nuevo precio\n: "))
 
             if election == 1:
                 articuloaux, stockaux, precioaux = (str(input("Ingrese el articulo: ")),
@@ -105,6 +139,13 @@ def Menu():
                 articulo, aumento = str(input("Ingrese el articulo: ")), int(
                 input("Ingrese el porcentaje de aumento sin el simbolo -%: "))
                 AumentarPrecio(articulo, aumento)
+            elif election==3:
+                articulo, decremento = str(input("Ingrese el articulo: ")), int(
+                    input("Ingrese el porcentaje de decremento sin el simbolo -%: "))
+                DisminuirPrecio(articulo, decremento)
+            elif election==4:
+                articulo,precio=str(input("Ingrese el articulo: ")), float(input("ingrese el precio nuevo"))
+                IngresarPrecio(articulo, precio)
 
 
         elif election == 3:
@@ -113,7 +154,7 @@ def Menu():
                 EliminarArticulo(str(input("ingrese el articulo a eliminar")))
 
             elif election == 2:
-                EliminarTotal()
+                EliminarTabla()
 
         else:
             break
@@ -141,8 +182,16 @@ def MainFunction():
             break
 
 
+
+
+
+
+
+
 Menu()
 MainFunction()
+
+
 
 connection.close()
 print("Conexión cerrada.")
