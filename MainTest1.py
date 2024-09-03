@@ -50,12 +50,12 @@ def AgregarPersonalizado(articulo,stock,precio):
 
 
 #   F_Elimina un elemento
-def EliminarArticulo(articulo):
-    if False:
+def EliminarArticulo(articuloaux):
+
         cursor.execute('''
         DELETE FROM Base
         WHERE articulo = ?
-        ''',(articulo,))
+        ''',(articuloaux,))
 
         connection.commit()
         print("Articulo eliminado.")
